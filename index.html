@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Games</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<style>
+    .container{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    gap: 9px;
+}
+.row{
+    display: flex;
+    flex-direction: row;
+    gap: 6px;
+}
+.letter, .full, .COMPLETED, .CORRECT, .CLOSE, .WRONG{
+    width: 50px;
+    height: 50px;
+    border: 1px solid black;
+    border-radius: 25%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    color: black;
+}
+.CORRECT{
+    background-color: rgb(97, 140, 85) !important;
+    color: white !important;
+    border: 1px solid rgb(97, 140, 85) !important;
+}
+.WRONG{
+    background-color: black !important;
+    color: white !important;
+    border: black !important;
+}
+.CLOSE{
+    background-color: rgb(198, 181, 102) !important;
+    color: white !important;
+    border: 1px solid rgb(198, 181, 102) !important;
+}
+</style>
+<body>
+    <div class="container">
+<h1>wordle </h1>
+        <div class="row" id="row1">
+            <div class="letter" id="1current-key"></div>
+            <div class="letter" id=""></div>
+            <div class="letter" id=""></div>
+            <div class="letter" id=""></div>
+            <div class="letter" id="last"></div>
+        </div>
+        <div class="row" id="row2">
+            <div class="letter" id="2current-key"></div>
+            <div class="letter" id=""></div>
+            <div class="letter" id=""></div>
+            <div class="letter" id=""></div>
+            <div class="letter" id="last"></div>
+        </div><div class="row" id="row3">
+            <div class="letter" id="3current-key"></div>
+            <div class="letter" id=""></div>
+            <div class="letter" id=""></div>
+            <div class="letter" id=""></div>
+            <div class="letter" id="last"></div>
+        </div><div class="row" id="row4">
+            <div class="letter" id="4current-key"></div>
+            <div class="letter" id=""></div>
+            <div class="letter" id=""></div>
+            <div class="letter" id=""></div>
+            <div class="letter" id="last"></div>
+        </div><div class="row" id="row5">
+            <div class="letter" id="5current-key"></div>
+            <div class="letter" id=""></div>
+            <div class="letter" id=""></div>
+            <div class="letter" id=""></div>
+            <div class="letter" id="last"></div>
+        </div><div class="row" id="row6">
+            <div class="letter" id="6current-key"></div>
+            <div class="letter" id=""></div>
+            <div class="letter" id=""></div>
+            <div class="letter" id=""></div>
+            <div class="letter" id="last"></div>
+        </div>
+    </div>
+</body>
+<script>
+    console.log('Hello World');
+letter=["P","E","N","N","Y"];
+selectedRow =1;
+document.addEventListener("keydown", function(event) {
+    if (event.key == "Enter"&&document.getElementsByClassName("full").length == 4){
+        
+        checkSubmission();
+    }
+    else if (/^[a-zA-Z]$/.test(event.key)){
+        document.getElementById(`${selectedRow}current-key`).innerHTML = event.key;
+    
+    if(document.getElementById(`${selectedRow}current-key`) != null){
+    og = document.getElementById(`${selectedRow}current-key`);
+    console.log("Set innerhtml");
+    document.getElementById(`${selectedRow}current-key`).innerHTML = event.key.toUpperCase();
+    console.log("Set innerhtml");
+    document.getElementById(`${selectedRow}current-key`).id = "p";
+    console.log("Changed id");
+    
+    if (og.nextElementSibling.id != "last"){
+        og.nextElementSibling.id = `${selectedRow}current-key`;
+        console.log("Set next child");
+    }
+    else{
+        og.nextElementSibling.id = `${selectedRow}current-key`;
+    }
+    document.getElementById("p").className = "full";
+    document.getElementById("p").id = "";
+    console.log("Removed id");
+    console.log(`Key pressed: ${event.key}`);
+}}
+});
+const checkSubmission = () => {
+    document.getElementById('p').className = "full";
+    var els = document.getElementsByClassName('full'),
+        i = els.length;
+    while (i--) {
+        els[i].className = 'COMPLETED';
+}       
+count = 0
+// console.log(document.getElementById('row1').children);
+var list = document.getElementById(`row${selectedRow}`).children,
+
+     h = list.length;
+console.log(list[h]);
+console.log(h);
+while (h--) {
+    console.log(list[h].innerHTML);
+    if (list[h].innerHTML==letter[h]){
+        list[h].className="CORRECT";
+        count++;
+    }
+    else if(letter.includes(list[h].innerHTML)){
+        list[h].className="CLOSE";
+    }
+    else{
+        list[h].className="WRONG";
+    }
+}
+document.getElementById("p").id = "";
+    selectedRow ++;
+if(count==5){
+
+    win();
+}
+}
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+  
+async function win(){
+    await sleep(50);
+    alert("You win!");
+    document.getElementById(`${selectedRow}current-key`).id = "NOTHING";
+}
+
+</script>
+</html>
