@@ -1,5 +1,5 @@
 console.log('Hello World');
-letter=["E","A","R","T","H"];
+letter=["S","T","A","G","E"];
 selectedRow =1;
 document.addEventListener("keydown", function(event) {
     if (event.key == "Enter"&&document.getElementsByClassName("full").length == 4){
