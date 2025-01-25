@@ -32,38 +32,39 @@ document.addEventListener("keydown", function(event) {
 });
 const checkSubmission = () => {
     document.getElementById('p').className = "full";
-    var els = document.getElementsByClassName('full'),
-        i = els.length;
-    while (i--) {
-        els[i].className = 'COMPLETED';
-}       
-count = 0
-// console.log(document.getElementById('row1').children);
-var list = document.getElementById(`row${selectedRow}`).children,
+    let list = document.getElementById(`row${selectedRow}`).children;
+    let h = list.length;
+    let count = 0;
 
-     h = list.length;
-console.log(list[h]);
-console.log(h);
-while (h--) {
-    console.log(list[h].innerHTML);
-    if (list[h].innerHTML==letter[h]){
-        list[h].className="CORRECT";
-        count++;
-    }
-    else if(letter.includes(list[h].innerHTML)){
-        list[h].className="CLOSE";
-    }
-    else{
-        list[h].className="WRONG";
-    }
-}
-document.getElementById("p").id = "";
-    selectedRow ++;
-if(count==5){
+    // Copy of the target word as an array
+    let targetWord = [...letter]; // ['S', 'T', 'A', 'G', 'E']
+    let guessedWord = Array.from(list).map(el => el.innerHTML); // User's guessed word
 
-    win();
-}
-}
+    // First pass: Mark CORRECT (Green)
+    for (let i = 0; i < h; i++) {
+        if (guessedWord[i] === targetWord[i]) {
+            list[i].className = "CORRECT";
+            targetWord[i] = null; // Remove from available letters
+            guessedWord[i] = null; // Prevent double marking
+            count++;
+        }
+    }
+
+    // Second pass: Mark CLOSE (Yellow)
+    for (let i = 0; i < h; i++) {
+        if (guessedWord[i] && targetWord.includes(guessedWord[i])) {
+            list[i].className = "CLOSE";
+            targetWord[targetWord.indexOf(guessedWord[i])] = null; // Remove first occurrence
+        } else if (guessedWord[i]) {
+            list[i].className = "WRONG"; // Mark incorrect letters
+        }
+    }
+
+    selectedRow++;
+    if (count == 5) {
+        win();
+    }
+};
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
