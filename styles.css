@@ -18,7 +18,7 @@
 .letter, .full, .COMPLETED, .CORRECT, .CLOSE, .WRONG{
     width: 50px;
     height: 50px;
-    border: 1px solid black;
+    border: 1px solid rgb(128, 128, 128);
     border-radius: 25%;
     display: flex;
     align-items: center;
@@ -27,17 +27,17 @@
     color: black;
 }
 .CORRECT{
-    background-color: rgb(97, 140, 85) !important;
+    background-color: rgb(20, 50, 120) !important;
     color: white !important;
-    border: 1px solid rgb(97, 140, 85) !important;
+    border: 1px solid rgb(20, 50, 120) !important;
 }
 .WRONG{
-    background-color: black !important;
+    background-color: rgba(0, 0, 0, 0.29) !important;
     color: white !important;
-    border: black !important;
+    border: 1px solid rgba(0, 0, 0, 0.29) !important;
 }
 .CLOSE{
-    background-color: rgb(198, 181, 102) !important;
+    background-color: rgba(70, 120, 180, 0.655) !important;
     color: white !important;
-    border: 1px solid rgb(198, 181, 102) !important;
+    border: 1px solid rgba(70, 120, 180, 0.655) !important;
 }
