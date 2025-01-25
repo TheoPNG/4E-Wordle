@@ -1,5 +1,4 @@
-console.log('Hello World');
-letter=["S","T","A","G","E"]; 
+letter=["C","R","I","S","P"];
 selectedRow =1;
 document.addEventListener("keydown", function(event) {
     if (event.key == "Enter"&&document.getElementsByClassName("full").length == 4){
@@ -11,60 +10,72 @@ document.addEventListener("keydown", function(event) {
     
     if(document.getElementById(`${selectedRow}current-key`) != null){
     og = document.getElementById(`${selectedRow}current-key`);
-    console.log("Set innerhtml");
+    //("Set innerhtml");
     document.getElementById(`${selectedRow}current-key`).innerHTML = event.key.toUpperCase();
-    console.log("Set innerhtml");
+    //("Set innerhtml");
     document.getElementById(`${selectedRow}current-key`).id = "p";
-    console.log("Changed id");
+    //("Changed id");
     
     if (og.nextElementSibling.id != "last"){
         og.nextElementSibling.id = `${selectedRow}current-key`;
-        console.log("Set next child");
+        //("Set next child");
     }
     else{
         og.nextElementSibling.id = `${selectedRow}current-key`;
     }
     document.getElementById("p").className = "full";
     document.getElementById("p").removeAttribute("id");
-    console.log("Removed id");
-    console.log(`Key pressed: ${event.key}`);
+    //("Removed id");
+    //(`Key pressed: ${event.key}`);
 }}
 });
 const checkSubmission = () => {
     document.getElementById('p').className = "full";
-    let list = document.getElementById(`row${selectedRow}`).children;
-    let h = list.length;
-    let count = 0;
+    var els = document.getElementsByClassName('full'),
+        i = els.length;
+    while (i--) {
+        els[i].className = 'COMPLETED';
+}       
+count = 0
+// //(document.getElementById('row1').children);
+var list = document.getElementById(`row${selectedRow}`).children,
+    h = list.length;
 
-    // Copy of the target word as an array
-    let targetWord = [...letter]; // ['S', 'T', 'A', 'G', 'E']
-    let guessedWord = Array.from(list).map(el => el.innerHTML); // User's guessed word
+//(list[h]); // Debugging statement (but note: list[h] is undefined because h is the length)
+//(h);
+var hasBeen = [false, false, false, false, false];
+for (let i = 0; i < h; i++) {  // Iterate from 0 to h-1
+    let activeChoice = list[i].innerHTML;
 
-    // First pass: Mark CORRECT (Green)
-    for (let i = 0; i < h; i++) {
-        if (guessedWord[i] === targetWord[i]) {
-            list[i].className = "CORRECT";
-            targetWord[i] = null; // Remove from available letters
-            guessedWord[i] = null; // Prevent double marking
-            count++;
-        }
+    if(!letter.includes(activeChoice)){
+
+            list[i].className = "WRONG";
+        
     }
-
-    // Second pass: Mark CLOSE (Yellow)
-    for (let i = 0; i < h; i++) {
-        if (guessedWord[i] && targetWord.includes(guessedWord[i])) {
-            list[i].className = "CLOSE";
-            targetWord[targetWord.indexOf(guessedWord[i])] = null; // Remove first occurrence
-        } else if (guessedWord[i]) {
-            list[i].className = "WRONG"; // Mark incorrect letters
-        }
+    else if (letter[i]==activeChoice) {
+        
+        list[i].className = "CORRECT";
+        count++;
+    } 
+    else if (activeChoice!=list[letter.indexOf(activeChoice)].innerHTML&&!hasBeen[letter.indexOf(activeChoice)]){
+        list[i].className = "CLOSE";
+        hasBeen[letter.indexOf(activeChoice)] = true;
+        console.log(list[letter.indexOf(activeChoice)].innerHTML);
+        console.log(letter[letter.indexOf(activeChoice)]);
+        
+    } 
+    else{
+        list[i].className = "WRONG";
     }
+    
+}
+document.getElementById("p").id = "";
+    selectedRow ++;
+if(count==5){
 
-    selectedRow++;
-    if (count == 5) {
-        win();
-    }
-};
+    win();
+}
+}
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
