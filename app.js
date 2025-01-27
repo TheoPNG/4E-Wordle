@@ -1,5 +1,5 @@
 
-letter=["C","R","I","S","P"];
+letter=["P","E","N","I","S"];
 selectedRow =1;
 
 
