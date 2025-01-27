@@ -1,10 +1,50 @@
+
 letter=["C","R","I","S","P"];
 selectedRow =1;
-document.addEventListener("keydown", function(event) {
-    if (event.key == "Enter"&&document.getElementsByClassName("full").length == 4){
-        
-        checkSubmission();
+
+
+async function isRealWord(word) {
+    const response = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`);
+    if (response.ok) {
+        const data = await response.json();
+        return data && data.length > 0;
+    } else {
+        return false;
     }
+}
+
+document.addEventListener("keydown", async function(event) {
+
+    // Convert HTMLCollection to an array and extract text content
+    
+    if (event.key == "Enter"){
+        const fullElements = document.getElementsByClassName("full");
+
+     // Ensure the word is exactly 4 letters long
+    if (fullElements.length !== 4) {
+        alert("Please fill in all the letters");
+ // Stop execution
+    }
+    else if (document.getElementById("p") == null){
+        alert("Please fill in all the letters");
+    }
+
+
+    // Convert HTMLCollection to a string
+    const word = Array.from(fullElements).map(el => el.innerHTML).join("")+document.getElementById("p").innerHTML;
+
+    // Check if it's a real word
+    const isValid = await isRealWord(word);
+
+    console.log(`Is "${word}" a valid word?`, isValid);
+
+    if (isValid&&fullElements.length==4) {
+        checkSubmission(); // Proceed if it's a valid word
+    } else {
+        alert("Not a valid word, try again!");
+    }
+    }
+
     else if (/^[a-zA-Z]$/.test(event.key)){
         document.getElementById(`${selectedRow}current-key`).innerHTML = event.key;
     
@@ -27,7 +67,13 @@ document.addEventListener("keydown", function(event) {
     document.getElementById("p").removeAttribute("id");
     //("Removed id");
     //(`Key pressed: ${event.key}`);
+
 }}
+else if(event.key == "Backspace"){
+    console.log(document.getElementById(`${selectedRow}current-key`));
+console.log(document.getElementById(`${selectedRow}current-key`).previousSibling.innerHTML);
+    document.getElementById(`${selectedRow}current-key`).previousSibling.innerHTML!="";
+};
 });
 const checkSubmission = () => {
     document.getElementById('p').className = "full";
@@ -60,8 +106,8 @@ for (let i = 0; i < h; i++) {  // Iterate from 0 to h-1
     else if (activeChoice!=list[letter.indexOf(activeChoice)].innerHTML&&!hasBeen[letter.indexOf(activeChoice)]){
         list[i].className = "CLOSE";
         hasBeen[letter.indexOf(activeChoice)] = true;
-        console.log(list[letter.indexOf(activeChoice)].innerHTML);
-        console.log(letter[letter.indexOf(activeChoice)]);
+        //(list[letter.indexOf(activeChoice)].innerHTML);
+        //(letter[letter.indexOf(activeChoice)]);
         
     } 
     else{
