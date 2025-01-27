@@ -14,7 +14,7 @@ async function isRealWord(word) {
 }
 
 document.addEventListener("keydown", async function(event) {
-
+ 
     // Convert HTMLCollection to an array and extract text content
     
     if (event.key == "Enter"){
