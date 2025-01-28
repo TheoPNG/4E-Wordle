@@ -84,50 +84,52 @@ document.addEventListener("keydown", async function(event) {
         
     };
 });
-const checkSubmission = () => {
+const checkSubmission = async () => {
     document.getElementById('p').className = "full";
     var els = document.getElementsByClassName('full'),
         i = els.length;
     while (i--) {
         els[i].className = 'COMPLETED';
     }
-    count = 0
-    // //(document.getElementById('row1').children);
+
+    count = 0;
     var list = document.getElementById(`row${selectedRow}`).children,
         h = list.length;
 
-    //(list[h]); // Debugging statement (but note: list[h] is undefined because h is the length)
-    //(h);
     var hasBeen = [false, false, false, false, false];
-    for (let i = 0; i < h; i++) { // Iterate from 0 to h-1
+
+    for (let i = 0; i < h; i++) {
         let activeChoice = list[i].innerHTML;
 
+        let newColor;
         if (!letter.includes(activeChoice)) {
-
-            list[i].className = "WRONG";
-
+            newColor = "rgba(0, 0, 0, 0.29)"; // WRONG
         } else if (letter[i] == activeChoice) {
-
-            list[i].className = "CORRECT";
+            newColor = "rgb(20, 50, 120)"; // CORRECT
             count++;
         } else if (activeChoice != list[letter.indexOf(activeChoice)].innerHTML && !hasBeen[letter.indexOf(activeChoice)]) {
-            list[i].className = "CLOSE";
+            newColor = "rgba(70, 120, 180, 0.655)"; // CLOSE
             hasBeen[letter.indexOf(activeChoice)] = true;
-            //(list[letter.indexOf(activeChoice)].innerHTML);
-            //(letter[letter.indexOf(activeChoice)]);
-
         } else {
-            list[i].className = "WRONG";
+            newColor = "rgba(0, 0, 0, 0.29)"; // WRONG
         }
 
+        // Set CSS variable for background color change
+        list[i].style.setProperty("--new-bg", newColor);
+
+        // Add flip animation
+        list[i].classList.add("flip");
+
+        await sleep(300); // Wait for the flip to progress before moving to the next tile
     }
+
     document.getElementById("p").id = "";
     selectedRow++;
-    if (count == 5) {
 
+    if (count == 5) {
         win();
     }
-}
+};
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
