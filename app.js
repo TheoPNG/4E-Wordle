@@ -1,4 +1,4 @@
-letter = ["F", "R", "U", "I", "T"];
+letter = ["E", "V", "E", "N", "T"];
 selectedRow = 1;
 
 
@@ -110,12 +110,15 @@ const checkSubmission = async () => {
         } else if (activeChoice != list[letter.indexOf(activeChoice)].innerHTML && !hasBeen[letter.indexOf(activeChoice)]) {
             newColor = "rgba(70, 120, 180, 0.655)"; // CLOSE
             hasBeen[letter.indexOf(activeChoice)] = true;
+            list[i].style.setProperty("border-color", 'red');
         } else {
             newColor = "rgba(0, 0, 0, 0.29)"; // WRONG
+            
         }
 
         // Set CSS variable for background color change
         list[i].style.setProperty("--new-bg", newColor);
+        
 
         // Add flip animation
         list[i].classList.add("flip");
