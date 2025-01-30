@@ -1,4 +1,4 @@
-letter = ["E", "V", "E", "N", "T"];
+letter = ["P", "L", "E", "A", "D"];
 selectedRow = 1;
 
 
