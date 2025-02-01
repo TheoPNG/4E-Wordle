@@ -1,7 +1,7 @@
 
 
 const date = new Date();
-// console.log(date.getMonth()+1+" "+date.getDate()+" "+date.getFullYear());
+
 function getFormattedDate() {
     const today = new Date();
     const options = { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' };
@@ -35,7 +35,8 @@ async function processCSV() {
         console.error("CSV data could not be retrieved.");
         return;
     }
-    // console.log(findFirstMatchingItem(doc));
+
+
 }
 
 async function processCSV() {
@@ -45,13 +46,12 @@ async function processCSV() {
         return;
     }
 
-    console.log("CSV Data Successfully Retrieved.");
-    
+
+
     const word = findFirstMatchingItem(doc);
     return word ? word.split('') : [];
 
-    console.log("Matching Word:", word);
-    console.log("Letter Array:", letter);
+
 }
 
 // Call the function properly
@@ -60,11 +60,10 @@ processCSV();
 function findFirstMatchingItem(csvText) {
     const todayDate = getFormattedDate(); // Example: "Fri Jan 31 2025"
     const lines = csvText.trim().split("\n");
-    // console.log(todayDate)
+
     for (let line of lines) {
         
         let [word, date] = line.split(",");
-        // console.log(date, todayDate);
         if (date && date.trim() === todayDate) {
             return word.trim() || "(No word assigned)";
             
@@ -75,52 +74,45 @@ function findFirstMatchingItem(csvText) {
 // const word = findFirstMatchingItem(doc.toString());
 async function initGame() {
     letter = await processCSV(); // Wait for processCSV() to finish
-    console.log("Letter Array:", letter);
 }
 
 initGame(); // Run it asynchronously
 selectedRow = 1;
-
-
-
-document.addEventListener("keydown", async function(event) {
-
-    // Convert HTMLCollection to an array and extract text content
-
-    if (event.key == "Enter") {
+const runLetter = async (letter) => {
+    if (letter == "Enter") {
         const fullElements = document.getElementsByClassName("full");
 
         // Ensure the word is exactly 4 letters long
         if (fullElements.length !== 4) {
             alert("Please fill in all the letters");
             // Stop execution
-        } else if (document.getElementById("p") == null) {
+        } else if (document.getElementById("HELLO") == null) {
             alert("Please fill in all the letters");
         }
 
 
         // Convert HTMLCollection to a string
-        const word = Array.from(fullElements).map(el => el.innerHTML).join("") + document.getElementById("p").innerHTML;
+        const word = Array.from(fullElements).map(el => el.innerHTML).join("") + document.getElementById("HELLO").innerHTML;
 
         // Check if it's a real word
         const isValid = await isRealWord(word);
 
-        // console.log(`Is "${word}" a valid word?`, isValid);
+
 
         if (isValid && fullElements.length == 4) {
             checkSubmission(); // Proceed if it's a valid word
         } else {
             alert("Not a valid word, try again!");
         }
-    } else if (/^[a-zA-Z]$/.test(event.key)) {
-        document.getElementById(`${selectedRow}current-key`).innerHTML = event.key;
+    } else if (/^[a-zA-Z]$/.test(letter)) {
+        document.getElementById(`${selectedRow}current-key`).innerHTML = letter;
 
         if (document.getElementById(`${selectedRow}current-key`) != null) {
             og = document.getElementById(`${selectedRow}current-key`);
             //("Set innerhtml");
-            document.getElementById(`${selectedRow}current-key`).innerHTML = event.key.toUpperCase();
+            document.getElementById(`${selectedRow}current-key`).innerHTML = letter.toUpperCase();
             //("Set innerhtml");
-            document.getElementById(`${selectedRow}current-key`).id = "p";
+            document.getElementById(`${selectedRow}current-key`).id = "HELLO";
             //("Changed id");
 
             if (og.nextElementSibling.id != "last") {
@@ -129,17 +121,18 @@ document.addEventListener("keydown", async function(event) {
             } else {
                 og.nextElementSibling.id = `${selectedRow}current-key`;
             }
-            document.getElementById("p").className = "full";
-            document.getElementById("p").removeAttribute("id");
+            document.getElementById("HELLO").className = "full";
+            document.getElementById("HELLO").removeAttribute("id");
             //("Removed id");
             //(`Key pressed: ${event.key}`);
 
         }
-    } else if (event.key == "Backspace") {
+    } else if (letter == "Backspace") {
 
-        // console.log(`${selectedRow}current-key`);
-        if(document.getElementById(`p`) != null){
-        currentActive= document.getElementById(`p`);
+
+
+        if(document.getElementById(`HELLO`) != null){
+        currentActive= document.getElementById(`HELLO`);
         currentActive.innerHTML = "";
         currentActive.id = `${selectedRow}current-key`;
         // currentActive.removeAttribute("id");
@@ -151,12 +144,21 @@ document.addEventListener("keydown", async function(event) {
         currentActive.previousElementSibling.id = `${selectedRow}current-key`;
         currentActive.removeAttribute("id");
         }
-        // console.log(currentActive);
+
         
     };
-});
+}
+
+
+document.addEventListener("keydown", async function(event) {
+    runLetter(event.key);
+    // Convert HTMLCollection to an array and extract text content
+}
+    
+);
+
 const checkSubmission = async () => {
-    document.getElementById('p').className = "full";
+    document.getElementById('HELLO').className = "full";
     var els = document.getElementsByClassName('full'),
         i = els.length;
     while (i--) {
@@ -175,11 +177,18 @@ const checkSubmission = async () => {
         let newColor;
         if (!letter.includes(activeChoice)) {
             newColor = "rgba(0, 0, 0, 0.29)"; // WRONG
+            
+            await sleep(200);
+            document.getElementById(activeChoice.toLocaleLowerCase()).className = "key k-wrong"
         } else if (letter[i] == activeChoice) {
             newColor = "rgb(20, 50, 120)"; // CORRECT
+            await sleep(200);
+            document.getElementById(activeChoice.toLocaleLowerCase()).className = "key k-correct"
             count++;
         } else if (activeChoice != list[letter.indexOf(activeChoice)].innerHTML && !hasBeen[letter.indexOf(activeChoice)]) {
             newColor = "rgba(70, 120, 180, 0.655)"; // CLOSE
+            await sleep(200);
+            document.getElementById(activeChoice.toLocaleLowerCase()).className = "key k-close"
             hasBeen[letter.indexOf(activeChoice)] = true;
         } else {
             newColor = "rgba(0, 0, 0, 0.29)"; // WRONG
@@ -196,7 +205,7 @@ const checkSubmission = async () => {
         await sleep(300); // Wait for the flip to progress before moving to the next tile
     }
 
-    document.getElementById("p").id = "";
+    document.getElementById("HELLO").id = "";
     selectedRow++;
 
     if (count == 5) {

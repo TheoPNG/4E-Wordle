@@ -106,3 +106,49 @@
     font-weight: 400;
     font-style: normal;
 }
+.keyboard{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 15px;
+    margin: 100px;
+}
+.keyboard .k-row{
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+}
+.key{
+    width: 50px;
+    height: 50px;
+    
+    border-radius: 15%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    
+}
+.empty{
+    background-color: white;
+    border: 1px solid black;
+
+}
+.k-correct{
+    background-color: rgb(20, 50, 120) !important;
+    border: 1px solid rgb(20, 50, 120) !important;
+    color: white;
+}
+.k-close{
+    background-color: rgba(70, 120, 180, 0.655) !important;
+    border: 1px solid rgba(70, 120, 180, 0.655) !important;
+    color: white;
+}
+.k-wrong{
+    background-color: rgba(0, 0, 0, 0.29) !important;
+    border: 1px solid rgba(0, 0, 0, 0.29) !important;
+    color: white;
+}
+.key:hover{
+    cursor:pointer;
+}
