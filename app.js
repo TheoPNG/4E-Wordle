@@ -1,3 +1,13 @@
+/*
+ * The Daily Owle - A Wordle-Inspired Game
+ * Copyright (c) 2025 Theodore Wilson
+ *
+ * Licensed under the MIT License.
+ * See LICENSE file in the project root for more details.
+ *
+ * Wordle is a trademark of The New York Times Company. 
+ * This project is an independent implementation and is not affiliated with or endorsed by The New York Times.
+ */
 const date = new Date();
 
 function getFormattedDate() {
