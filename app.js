@@ -202,7 +202,7 @@ const checkSubmission = async () => {
         // Add flip animation
         list[i].classList.add("flip");
 
-        await sleep(300); // Wait for the flip to progress before moving to the next tile
+        await sleep(100); // Wait for the flip to progress before moving to the next tile
     }
 
     document.getElementById("HELLO").id = "";
