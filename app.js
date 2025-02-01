@@ -22,8 +22,7 @@ async function isRealWord(word) {
 
 async function fetchCSV(url) {
     try {
-        // Append a timestamp to the URL to force the browser to fetch a fresh version
-        const cacheBuster = new Date().getTime(); // Unique timestamp
+        const cacheBuster = new Date().getTime();
         const response = await fetch(`${url}?_=${cacheBuster}`);
         const data = await response.text();
         return data;
@@ -56,11 +55,10 @@ async function processCSV() {
 
 }
 
-// Call the function properly
 processCSV();
-// Function to parse CSV and find the first matching item
+
 function findFirstMatchingItem(csvText) {
-    const todayDate = getFormattedDate(); // Example: "Fri Jan 31 2025"
+    const todayDate = getFormattedDate();
     const lines = csvText.trim().split("\n");
 
     for (let line of lines) {
@@ -73,35 +71,30 @@ function findFirstMatchingItem(csvText) {
     }
     return "No match found for today's date";
 }
-// const word = findFirstMatchingItem(doc.toString());
+
 async function initGame() {
-    letter = await processCSV(); // Wait for processCSV() to finish
+    letter = await processCSV();
 }
 
-initGame(); // Run it asynchronously
+initGame();
 selectedRow = 1;
 const runLetter = async (letter) => {
     if (letter == "Enter") {
         const fullElements = document.getElementsByClassName("full");
 
-        // Ensure the word is exactly 4 letters long
         if (fullElements.length !== 4) {
             alert("Please fill in all the letters");
-            // Stop execution
         } else if (document.getElementById("HELLO") == null) {
             alert("Please fill in all the letters");
         }
 
-
-        // Convert HTMLCollection to a string
         const word = Array.from(fullElements).map(el => el.innerHTML).join("") + document.getElementById("HELLO").innerHTML;
 
-        // Check if it's a real word
         const isValid = await isRealWord(word);
 
 
         if (isValid && fullElements.length == 4) {
-            checkSubmission(); // Proceed if it's a valid word
+            checkSubmission();
         } else {
             alert("Not a valid word, try again!");
         }
@@ -110,22 +103,16 @@ const runLetter = async (letter) => {
 
         if (document.getElementById(`${selectedRow}current-key`) != null) {
             og = document.getElementById(`${selectedRow}current-key`);
-            //("Set innerhtml");
             document.getElementById(`${selectedRow}current-key`).innerHTML = letter.toUpperCase();
-            //("Set innerhtml");
             document.getElementById(`${selectedRow}current-key`).id = "HELLO";
-            //("Changed id");
 
             if (og.nextElementSibling.id != "last") {
                 og.nextElementSibling.id = `${selectedRow}current-key`;
-                //("Set next child");
             } else {
                 og.nextElementSibling.id = `${selectedRow}current-key`;
             }
             document.getElementById("HELLO").className = "full";
             document.getElementById("HELLO").removeAttribute("id");
-            //("Removed id");
-            //(`Key pressed: ${event.key}`);
 
         }
     } else if (letter == "Backspace") {
@@ -135,7 +122,6 @@ const runLetter = async (letter) => {
             currentActive = document.getElementById(`HELLO`);
             currentActive.innerHTML = "";
             currentActive.id = `${selectedRow}current-key`;
-            // currentActive.removeAttribute("id");
         } else {
             currentActive = document.getElementById(`${selectedRow}current-key`);
 
@@ -151,7 +137,6 @@ const runLetter = async (letter) => {
 
 document.addEventListener("keydown", async function (event) {
         runLetter(event.key);
-        // Convert HTMLCollection to an array and extract text content
     }
 
 );
@@ -175,33 +160,32 @@ const checkSubmission = async () => {
 
         let newColor;
         if (!letter.includes(activeChoice)) {
-            newColor = "rgba(0, 0, 0, 0.29)"; // WRONG
+            newColor = "rgba(0, 0, 0, 0.29)";
 
             await sleep(200);
             document.getElementById(activeChoice.toLocaleLowerCase()).className = "key k-wrong"
         } else if (letter[i] == activeChoice) {
-            newColor = "rgb(20, 50, 120)"; // CORRECT
+            newColor = "rgb(20, 50, 120)";
             await sleep(200);
             document.getElementById(activeChoice.toLocaleLowerCase()).className = "key k-correct"
             count++;
         } else if (activeChoice != list[letter.indexOf(activeChoice)].innerHTML && !hasBeen[letter.indexOf(activeChoice)]) {
-            newColor = "rgba(70, 120, 180, 0.655)"; // CLOSE
+            newColor = "rgba(70, 120, 180, 0.655)";
             await sleep(200);
             document.getElementById(activeChoice.toLocaleLowerCase()).className = "key k-close"
             hasBeen[letter.indexOf(activeChoice)] = true;
         } else {
-            newColor = "rgba(0, 0, 0, 0.29)"; // WRONG
+            newColor = "rgba(0, 0, 0, 0.29)";
 
         }
 
-        // Set CSS variable for background color change
+
         list[i].style.setProperty("--new-bg", newColor);
 
 
-        // Add flip animation
         list[i].classList.add("flip");
 
-        await sleep(100); // Wait for the flip to progress before moving to the next tile
+        await sleep(100);
     }
 
     document.getElementById("HELLO").id = "";
@@ -226,7 +210,7 @@ function launchConfetti() {
     canvas.style.position = "fixed";
     canvas.style.top = "0";
     canvas.style.left = "0";
-    canvas.style.pointerEvents = "none"; // Prevents interaction issues
+    canvas.style.pointerEvents = "none";
 
     let confettiParticles = [];
 
@@ -235,10 +219,10 @@ function launchConfetti() {
             confettiParticles.push({
                 x: Math.random() * canvas.width,
                 y: Math.random() * canvas.height - canvas.height,
-                size: Math.random() * 8 + 2, // Confetti size between 2px-10px
-                color: `hsl(${Math.random() * 360}, 100%, 70%)`, // Random colors
-                velocityX: (Math.random() - 0.5) * 4, // Horizontal movement
-                velocityY: Math.random() * 5 + 2, // Vertical speed
+                size: Math.random() * 8 + 2,
+                color: `hsl(${Math.random() * 360}, 100%, 70%)`,
+                velocityX: (Math.random() - 0.5) * 4,
+                velocityY: Math.random() * 5 + 2,
                 rotation: Math.random() * 360,
                 rotationSpeed: Math.random() * 10,
             });
@@ -253,12 +237,11 @@ function launchConfetti() {
             p.y += p.velocityY;
             p.rotation += p.rotationSpeed;
 
-            // Remove confetti that falls off screen
+
             if (p.y > canvas.height) {
                 confettiParticles.splice(index, 1);
             }
 
-            // Draw confetti as rotated rectangles
             ctx.save();
             ctx.translate(p.x, p.y);
             ctx.rotate((p.rotation * Math.PI) / 180);
@@ -270,20 +253,18 @@ function launchConfetti() {
         if (confettiParticles.length > 0) {
             requestAnimationFrame(updateConfetti);
         } else {
-            setTimeout(() => canvas.remove(), 500); // Remove canvas when done
+            setTimeout(() => canvas.remove(), 500);
         }
     }
 
-    createConfettiParticles(1000); // Number of confetti particles
+    createConfettiParticles(1000);
     updateConfetti();
 
-    // Stop confetti after 3 seconds to prevent performance issues
+
     setTimeout(() => (confettiParticles = []), 10000);
 }
 async function win() {
     document.getElementById(`${selectedRow}current-key`).id = "NOTHING";
     await sleep(100);
     launchConfetti();
-    // alert("You win!");
-
 }
