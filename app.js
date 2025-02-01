@@ -2,6 +2,8 @@ letter = ["D", "E", "A", "T", "H"];
 selectedRow = 1;
 
 
+const date = new Date();
+console.log(date.getMonth()+1+" "+date.getDate()+" "+date.getFullYear());
 async function isRealWord(word) {
     const response = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`);
     if (response.ok) {
@@ -11,6 +13,18 @@ async function isRealWord(word) {
         return false;
     }
 }
+
+async function fetchCSV(url) {
+    try {
+        const response = await fetch(url);
+        const data = await response.text();
+        console.log(data);
+    } catch (error) {
+        console.error('Error fetching CSV:', error);
+    }
+}
+
+fetchCSV('./nothingToSeeHere.csv');
 
 document.addEventListener("keydown", async function(event) {
 
