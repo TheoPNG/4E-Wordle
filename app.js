@@ -1,10 +1,13 @@
-
-
 const date = new Date();
 
 function getFormattedDate() {
     const today = new Date();
-    const options = { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' };
+    const options = {
+        weekday: 'short',
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric'
+    };
     return today.toLocaleDateString('en-US', options).replace(/,/g, '').trim();
 }
 async function isRealWord(word) {
@@ -47,7 +50,6 @@ async function processCSV() {
     }
 
 
-
     const word = findFirstMatchingItem(doc);
     return word ? word.split('') : [];
 
@@ -62,11 +64,11 @@ function findFirstMatchingItem(csvText) {
     const lines = csvText.trim().split("\n");
 
     for (let line of lines) {
-        
+
         let [word, date] = line.split(",");
         if (date && date.trim() === todayDate) {
             return word.trim() || "(No word assigned)";
-            
+
         }
     }
     return "No match found for today's date";
@@ -96,7 +98,6 @@ const runLetter = async (letter) => {
 
         // Check if it's a real word
         const isValid = await isRealWord(word);
-
 
 
         if (isValid && fullElements.length == 4) {
@@ -130,31 +131,29 @@ const runLetter = async (letter) => {
     } else if (letter == "Backspace") {
 
 
+        if (document.getElementById(`HELLO`) != null) {
+            currentActive = document.getElementById(`HELLO`);
+            currentActive.innerHTML = "";
+            currentActive.id = `${selectedRow}current-key`;
+            // currentActive.removeAttribute("id");
+        } else {
+            currentActive = document.getElementById(`${selectedRow}current-key`);
 
-        if(document.getElementById(`HELLO`) != null){
-        currentActive= document.getElementById(`HELLO`);
-        currentActive.innerHTML = "";
-        currentActive.id = `${selectedRow}current-key`;
-        // currentActive.removeAttribute("id");
-        }
-        else{
-        currentActive = document.getElementById(`${selectedRow}current-key`);
-
-        currentActive.previousElementSibling.innerHTML = "";
-        currentActive.previousElementSibling.id = `${selectedRow}current-key`;
-        currentActive.removeAttribute("id");
+            currentActive.previousElementSibling.innerHTML = "";
+            currentActive.previousElementSibling.id = `${selectedRow}current-key`;
+            currentActive.removeAttribute("id");
         }
 
-        
+
     };
 }
 
 
-document.addEventListener("keydown", async function(event) {
-    runLetter(event.key);
-    // Convert HTMLCollection to an array and extract text content
-}
-    
+document.addEventListener("keydown", async function (event) {
+        runLetter(event.key);
+        // Convert HTMLCollection to an array and extract text content
+    }
+
 );
 
 const checkSubmission = async () => {
@@ -177,7 +176,7 @@ const checkSubmission = async () => {
         let newColor;
         if (!letter.includes(activeChoice)) {
             newColor = "rgba(0, 0, 0, 0.29)"; // WRONG
-            
+
             await sleep(200);
             document.getElementById(activeChoice.toLocaleLowerCase()).className = "key k-wrong"
         } else if (letter[i] == activeChoice) {
@@ -192,12 +191,12 @@ const checkSubmission = async () => {
             hasBeen[letter.indexOf(activeChoice)] = true;
         } else {
             newColor = "rgba(0, 0, 0, 0.29)"; // WRONG
-            
+
         }
 
         // Set CSS variable for background color change
         list[i].style.setProperty("--new-bg", newColor);
-        
+
 
         // Add flip animation
         list[i].classList.add("flip");
@@ -286,5 +285,5 @@ async function win() {
     await sleep(100);
     launchConfetti();
     // alert("You win!");
-    
+
 }

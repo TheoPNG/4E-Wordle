@@ -1,4 +1,4 @@
-.container{
+.container {
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
@@ -10,13 +10,17 @@
     padding: 0;
     gap: 9px;
 }
-.row{
+
+.row {
     display: flex;
     flex-direction: row;
     gap: 6px;
-    
+
 }
-.letter, .full, .COMPLETED{
+
+.letter,
+.full,
+.COMPLETED {
     width: 50px;
     height: 50px;
     border: 1px solid rgb(0, 0, 0);
@@ -33,11 +37,29 @@
     font-weight: 400;
     font-style: normal;
 }
+
 @keyframes flip {
-    0% { transform: rotateX(0deg); }
-    49% { transform: rotateX(90deg); background-color: white; } /* Keeps it white until halfway */
-    50% { transform: rotateX(90deg); background-color: var(--new-bg, white); } /* Color changes mid-flip */
-    100% { transform: rotateX(0deg); background-color: var(--new-bg, white); border: 1px solid var(--new-bg, --new-bg);}
+    0% {
+        transform: rotateX(0deg);
+    }
+
+    49% {
+        transform: rotateX(90deg);
+        background-color: white;
+    }
+
+    /* Keeps it white until halfway */
+    50% {
+        transform: rotateX(90deg);
+        background-color: var(--new-bg, white);
+    }
+
+    /* Color changes mid-flip */
+    100% {
+        transform: rotateX(0deg);
+        background-color: var(--new-bg, white);
+        border: 1px solid var(--new-bg, --new-bg);
+    }
 }
 
 .flip {
@@ -45,6 +67,7 @@
     animation-fill-mode: forwards;
     color: white;
 }
+
 .CORRECT {
     background-color: red;
     color: white !important;
@@ -53,7 +76,7 @@
     border-color: rgb(20, 50, 120) !important;
     width: 51px;
     height: 51px;
-    border: 5px solid red!important;
+    border: 5px solid red !important;
     /* border-radius: 25%; */
     display: flex;
     align-items: center;
@@ -67,7 +90,8 @@
     font-weight: 400;
     font-style: normal;
 }
-.WRONG{
+
+.WRONG {
     background-color: rgba(0, 0, 0, 0.29) !important;
     color: white !important;
     border: 1px solid rgb(255, 255, 255) !important;
@@ -87,7 +111,8 @@
     font-weight: 400;
     font-style: normal;
 }
-.CLOSE{
+
+.CLOSE {
     background-color: rgba(70, 120, 180, 0.655) !important;
     color: white !important;
     border: 1px solid rgba(70, 120, 180, 0.655) !important;
@@ -106,49 +131,57 @@
     font-weight: 400;
     font-style: normal;
 }
-.keyboard{
+
+.keyboard {
     display: flex;
     align-items: center;
     flex-direction: column;
     gap: 15px;
     margin: 50px;
 }
-.keyboard .k-row{
+
+.keyboard .k-row {
     display: flex;
     flex-direction: row;
     gap: 15px;
 }
-.key{
+
+.key {
     width: 40px;
     height: 40px;
-    
+
     border-radius: 15%;
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 15px;
-    
+
 }
-.empty{
+
+.empty {
     background-color: white;
     border: 1px solid black;
 
 }
-.k-correct{
+
+.k-correct {
     background-color: rgb(20, 50, 120) !important;
     border: 1px solid rgb(20, 50, 120) !important;
     color: white;
 }
-.k-close{
+
+.k-close {
     background-color: rgba(70, 120, 180, 0.655) !important;
     border: 1px solid rgba(70, 120, 180, 0.655) !important;
     color: white;
 }
-.k-wrong{
+
+.k-wrong {
     background-color: rgba(0, 0, 0, 0.29) !important;
     border: 1px solid rgba(0, 0, 0, 0.29) !important;
     color: white;
 }
-.key:hover{
-    cursor:pointer;
+
+.key:hover {
+    cursor: pointer;
 }
