@@ -217,8 +217,74 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+function launchConfetti() {
+    const canvas = document.createElement("canvas");
+    document.body.appendChild(canvas);
+    const ctx = canvas.getContext("2d");
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    canvas.style.position = "fixed";
+    canvas.style.top = "0";
+    canvas.style.left = "0";
+    canvas.style.pointerEvents = "none"; // Prevents interaction issues
+
+    let confettiParticles = [];
+
+    function createConfettiParticles(count) {
+        for (let i = 0; i < count; i++) {
+            confettiParticles.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height - canvas.height,
+                size: Math.random() * 8 + 2, // Confetti size between 2px-10px
+                color: `hsl(${Math.random() * 360}, 100%, 70%)`, // Random colors
+                velocityX: (Math.random() - 0.5) * 4, // Horizontal movement
+                velocityY: Math.random() * 5 + 2, // Vertical speed
+                rotation: Math.random() * 360,
+                rotationSpeed: Math.random() * 10,
+            });
+        }
+    }
+
+    function updateConfetti() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        confettiParticles.forEach((p, index) => {
+            p.x += p.velocityX;
+            p.y += p.velocityY;
+            p.rotation += p.rotationSpeed;
+
+            // Remove confetti that falls off screen
+            if (p.y > canvas.height) {
+                confettiParticles.splice(index, 1);
+            }
+
+            // Draw confetti as rotated rectangles
+            ctx.save();
+            ctx.translate(p.x, p.y);
+            ctx.rotate((p.rotation * Math.PI) / 180);
+            ctx.fillStyle = p.color;
+            ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+            ctx.restore();
+        });
+
+        if (confettiParticles.length > 0) {
+            requestAnimationFrame(updateConfetti);
+        } else {
+            setTimeout(() => canvas.remove(), 500); // Remove canvas when done
+        }
+    }
+
+    createConfettiParticles(1000); // Number of confetti particles
+    updateConfetti();
+
+    // Stop confetti after 3 seconds to prevent performance issues
+    setTimeout(() => (confettiParticles = []), 10000);
+}
 async function win() {
-    await sleep(50);
-    alert("You win!");
     document.getElementById(`${selectedRow}current-key`).id = "NOTHING";
+    await sleep(100);
+    launchConfetti();
+    // alert("You win!");
+    
 }
