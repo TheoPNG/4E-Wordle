@@ -19,12 +19,13 @@ async function isRealWord(word) {
 
 async function fetchCSV(url) {
     try {
-        const response = await fetch(url);
+        // Append a timestamp to the URL to force the browser to fetch a fresh version
+        const cacheBuster = new Date().getTime(); // Unique timestamp
+        const response = await fetch(`${url}?_=${cacheBuster}`);
         const data = await response.text();
-        // console.log("CSV Data:", data);
-        return data; // <-- Ensure it returns the text
+        return data;
     } catch (error) {
-        console.error('Error fetching CSV:', error);
+        console.error("Error fetching CSV:", error);
         return null;
     }
 }
